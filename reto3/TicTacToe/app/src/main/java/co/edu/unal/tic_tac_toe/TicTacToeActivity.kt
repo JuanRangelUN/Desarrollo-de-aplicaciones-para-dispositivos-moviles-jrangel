@@ -57,21 +57,12 @@ class TicTacToeActivity : AppCompatActivity() {
             loadTurnText()
             for (button in boardButtons) {
                 button.text = "-"
+                button.isEnabled=false
             }
-            gameStateText.text = " "
-            boardButtons[0].isClickable=true
-            boardButtons[1].isClickable=true
-            boardButtons[2].isClickable=true
-            boardButtons[3].isClickable=true
-            boardButtons[4].isClickable=true
-            boardButtons[5].isClickable=true
-            boardButtons[6].isClickable=true
-            boardButtons[7].isClickable=true
-            boardButtons[8].isClickable=true
         }
+        if (!isGameFinished()) {
+            for ((i, button) in boardButtons.withIndex()) {
 
-        for ((i, button) in boardButtons.withIndex()) {
-            if (!isGameFinished()) {
                 button.setOnClickListener {
                     var computerTile = 0
                     var actualTurn = ticTacToe.getTurn()
@@ -94,18 +85,18 @@ class TicTacToeActivity : AppCompatActivity() {
                     }
                 }
             }
-            else{
-                boardButtons.withIndex()
-                boardButtons[1].isClickable=false
-                boardButtons[2].isClickable=false
-                boardButtons[3].isClickable=false
-                boardButtons[4].isClickable=false
-                boardButtons[5].isClickable=false
-                boardButtons[6].isClickable=false
-                boardButtons[7].isClickable=false
-                boardButtons[8].isClickable=false
-            }
         }
+            else{
+                boardButtons[1].isEnabled=false
+                boardButtons[2].isEnabled=false
+                boardButtons[3].isEnabled=false
+                boardButtons[4].isEnabled=false
+                boardButtons[5].isEnabled=false
+                boardButtons[6].isEnabled=false
+                boardButtons[7].isEnabled=false
+                boardButtons[8].isEnabled=false
+            }
+
     }
 
     private fun setInitialText(){
