@@ -57,7 +57,7 @@ class TicTacToeActivity : AppCompatActivity() {
             loadTurnText()
             for (button in boardButtons) {
                 button.text = "-"
-                button.isEnabled=false
+                button.isEnabled=true
             }
         }
         if (!isGameFinished()) {
@@ -86,16 +86,9 @@ class TicTacToeActivity : AppCompatActivity() {
                 }
             }
         }
-            else{
-                boardButtons[1].isEnabled=false
-                boardButtons[2].isEnabled=false
-                boardButtons[3].isEnabled=false
-                boardButtons[4].isEnabled=false
-                boardButtons[5].isEnabled=false
-                boardButtons[6].isEnabled=false
-                boardButtons[7].isEnabled=false
-                boardButtons[8].isEnabled=false
-            }
+        else{
+
+        }
 
     }
 
@@ -111,14 +104,41 @@ class TicTacToeActivity : AppCompatActivity() {
             ticTacToe.getPerson() -> {
                 gameStateText.text = "Person Wins!"
                 scoreBoard[0] = scoreBoard[0]+1
+                boardButtons[0].isEnabled=false
+                boardButtons[1].isEnabled=false
+                boardButtons[2].isEnabled=false
+                boardButtons[3].isEnabled=false
+                boardButtons[4].isEnabled=false
+                boardButtons[5].isEnabled=false
+                boardButtons[6].isEnabled=false
+                boardButtons[7].isEnabled=false
+                boardButtons[8].isEnabled=false
             }
             "TIE" -> {
                 gameStateText.text = "It's a tie!"
                 scoreBoard[1] = scoreBoard[1]+1
+                boardButtons[0].isEnabled=false
+                boardButtons[1].isEnabled=false
+                boardButtons[2].isEnabled=false
+                boardButtons[3].isEnabled=false
+                boardButtons[4].isEnabled=false
+                boardButtons[5].isEnabled=false
+                boardButtons[6].isEnabled=false
+                boardButtons[7].isEnabled=false
+                boardButtons[8].isEnabled=false
             }
             ticTacToe.getrobot() -> {
                 gameStateText.text = "robot Wins!"
                 scoreBoard[2] = scoreBoard[2]+1
+                boardButtons[0].isEnabled=false
+                boardButtons[1].isEnabled=false
+                boardButtons[2].isEnabled=false
+                boardButtons[3].isEnabled=false
+                boardButtons[4].isEnabled=false
+                boardButtons[5].isEnabled=false
+                boardButtons[6].isEnabled=false
+                boardButtons[7].isEnabled=false
+                boardButtons[8].isEnabled=false
             }
             else -> {
                 gameStateText.text = " "
@@ -126,7 +146,7 @@ class TicTacToeActivity : AppCompatActivity() {
         }
         loadTurnText()
         loadScoreBoardText()
-        return result == "PESRON" || result == "TIE" || result == "ROBOT"
+        return result == ticTacToe.getPerson() || result == "TIE" || result == "ROBOT"
     }
 
     private fun loadTurnText(){
