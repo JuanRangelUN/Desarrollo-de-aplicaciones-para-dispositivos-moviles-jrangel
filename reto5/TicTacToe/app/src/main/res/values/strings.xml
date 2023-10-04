@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Tic-Tac-Toe</string>
+    <string name="Guion">-</string>
+    <string name="icon_description">game icon</string>
+    <string name="about_title">Tic-Tac-Toe</string>
+    <string name="about_author">DADM Juan sebastian</string>
+    <string name="about_description">Tic tac toe o triqui tradicional contra la máquina con 3 dificultades difrentes.</string>
+    <string  name="ok">volver</string>
+    <string name="choose_difficulty">escoja un nivel de dificultad</string>
+    <string name="quit_message">Seguro quieres salir de la aplicación?</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="quit_menu">Salir</string>
+    <string name="new_game_menu">Nuevo Juego</string>
+    <string name="difficulty_menu">Dificultad</string>
+    <string name="about_menu">Descripción</string>
+</resources>
