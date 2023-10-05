@@ -21,6 +21,10 @@ class TicTacToe() {
     public fun getPerson(): String{
         return this.person
     }
+    public fun getBoard():Array<String>
+    {
+        return this.board
+    }
 
     public fun getrobot(): String{
         return this.robot
@@ -28,7 +32,7 @@ class TicTacToe() {
     public fun getrobotSymbol(): String {
         return this.robotSymbol
     }
-    public fun getPersonSymbol(): String {
+   fun getPersonSymbol(): String {
         return this.personSymbol
     }
 
