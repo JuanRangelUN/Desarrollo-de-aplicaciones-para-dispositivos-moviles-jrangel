@@ -42,6 +42,38 @@ class TicTacToe() {
     fun setDifficulty(difficulty: Difficulty) {
         this.dificultad = difficulty
     }
+    fun setDifficulty(difficulty: String?) {
+        if (difficulty != null) {
+            when (difficulty) {
+                "FACIL" -> {
+                    this.dificultad = Difficulty.FACIL
+                }
+
+                "DIFICL" -> {
+                    this.dificultad = Difficulty.DIFICIL
+                }
+
+                "EXPERTO" -> {
+                    this.dificultad = Difficulty.EXPERTO
+                }
+
+                else -> {
+                    this.dificultad = Difficulty.FACIL
+                }
+            }
+
+        }
+        else this.dificultad = Difficulty.FACIL
+    }
+    fun setValuesOnRestart(board: Array<String>?, turn: String?){
+        if(board != null && turn != null){
+            this.board = board
+            this.turn = turn
+        }else{
+            newGame()
+        }
+    }
+
     public fun checkForWinner(): String {
         var i = 0
         // Check rows

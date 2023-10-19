@@ -1,10 +1,12 @@
 package co.edu.unal.tic_tac_toe
 
 import android.content.Intent
+import android.content.SharedPreferences
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.os.PersistableBundle
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
@@ -28,12 +30,11 @@ class TicTacToeActivity : AppCompatActivity(),
     private lateinit var XWinsText: TextView
     private lateinit var tiesText: TextView
     private lateinit var gameStateText: TextView
-    private lateinit var newGameButton: Button
-    private lateinit var boardButtons: ArrayList<Button>
     private lateinit var scoreBoard: Array<Int>
     private lateinit var symbols: Array<String>
     private lateinit var xSound: MediaPlayer
     private lateinit var oSound: MediaPlayer
+    private lateinit var prefs: SharedPreferences
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,17 +43,31 @@ class TicTacToeActivity : AppCompatActivity(),
         setSupportActionBar(findViewById(R.id.toolbar))
 
         ticTacToe = TicTacToe()
+        prefs = getSharedPreferences("ttt_prefs", MODE_PRIVATE);
+
         turnText = findViewById<TextView>(R.id.turn)
         OWinsText = findViewById<TextView>(R.id.o_wins)
         XWinsText = findViewById<TextView>(R.id.x_wins)
         tiesText = findViewById<TextView>(R.id.ties)
         gameStateText = findViewById<TextView>(R.id.game_status)
         gridView = findViewById<GridView>(R.id.grid)
-        scoreBoard = arrayOf(0,0,0)
         symbols = arrayOf(ticTacToe.getPersonSymbol(),ticTacToe.getrobotSymbol())
+        scoreBoard = arrayOf(
+            prefs.getInt("playerWins",0),
+            prefs.getInt("ties",0),
+            prefs.getInt("computerWins",0)
+        )
+
+        if (savedInstanceState != null) {
+            ticTacToe.setValuesOnRestart(
+                savedInstanceState.getStringArray("board"),
+                savedInstanceState.getString("turn")
+            )
+        }
+        ticTacToe.setDifficulty(prefs.getString("dificultad","FACIL"))
+
         gridView.setTicTacToe(ticTacToe)
         gridView.setOnTouchListener { _ , motionEvent -> touchGridEvent(motionEvent) }
-
         setInitialText()
         firstComputerMove()
     }
@@ -75,7 +90,21 @@ class TicTacToeActivity : AppCompatActivity(),
         loadScoreBoardText()
         isGameFinished()
     }
-
+    override fun onStop() {
+        super.onStop()
+        val ed: SharedPreferences.Editor = prefs.edit()
+        ed.putInt("playerWins", scoreBoard[0])
+        ed.putInt("ties", scoreBoard[1])
+        ed.putInt("computerWins", scoreBoard[2])
+        ed.putString("dificultad", ticTacToe.getrobotSymbol().toString())
+        ed.apply()
+    }
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putStringArray("board",ticTacToe.getBoard())
+        outState.putString("turn",ticTacToe.getTurn())
+        Log.d("*****", "enSaveInstance")
+    }
     override fun onResume() {
         super.onResume()
         xSound = MediaPlayer.create(applicationContext,R.raw.xsound)
@@ -147,6 +176,15 @@ class TicTacToeActivity : AppCompatActivity(),
             val aboutDialog = dialogoDescripcion()
             aboutDialog.show(supportFragmentManager, "about")
         }
+        R.id.restart -> {
+            scoreBoard= arrayOf(0,0,0)
+            val ed: SharedPreferences.Editor = prefs.edit()
+            ed.putInt("playerWins", scoreBoard[0])
+            ed.putInt("ties", scoreBoard[1])
+            ed.putInt("computerWins", scoreBoard[2])
+            ed.apply()
+            loadScoreBoardText()
+        }
     }
         return false
     }
@@ -183,6 +221,7 @@ class TicTacToeActivity : AppCompatActivity(),
             isGameFinished()
             gridView.isEnabled = true
         }, 1000)
+        gridView.invalidate()
     }
 
     private fun touchGridEvent(event: MotionEvent?): Boolean {
@@ -194,20 +233,19 @@ class TicTacToeActivity : AppCompatActivity(),
                 val column = xCoordinate / gridView.getTileWidth()
                 val row = yCoordinate / gridView.getTileHeight()
                 val tilePosition = row * 3 + column
-                    if (ticTacToe.getTurn() == ticTacToe.getPerson()) {
-                        val tileWasChanged = setPlayerMove(tilePosition)
-                        if (tileWasChanged) {
-                            val isGameFinished = isGameFinished()
-                            if (!isGameFinished) {
-                                setComputerMove()
-                            }
+                if (ticTacToe.getTurn() == ticTacToe.getPerson()) {
+                    val tileWasChanged = setPlayerMove(tilePosition)
+                    if (tileWasChanged) {
+                        val isGameFinished = isGameFinished()
+                        if (!isGameFinished) {
+                            setComputerMove()
                         }
-                    } else {
-                        setComputerMove()
                     }
+                } else {
+                    setComputerMove()
                 }
             }
-
+        }
         return true
     }
 
